@@ -13,8 +13,14 @@ public class RestTest
     {
       try 
       {
-          URL url = new URL("http://localhost:8080/api/tutorial/1.0/employees");
+            URL url = new URL("http://localhost:8080/api/tutorial/1.0/employees");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Quale operazione vuoi eseguire: \n"+
+                    "1) Output di tutti gli impiegati.\n"+
+                    "2) Inserimento di un impiegato.\n"+
+                    "3) Eliminazione di un impiegato tramite id. \n"+
+                    "4) Output di un impiegato tramite id. \n"+
+                    "5) ");
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
