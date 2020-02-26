@@ -22,6 +22,7 @@ public class RestTest
             BufferedReader br;
             int risposta;
             String in;
+            String output;
             System.out.println("Quale operazione vuoi eseguire: \n"+
                     "1) Output di tutti gli impiegati(GET).\n"+
                     "2) Inserimento di un impiegato/(POST).\n"+
@@ -36,13 +37,10 @@ public class RestTest
                     conn.setRequestMethod("GET");
                     conn.setRequestProperty("Accept", "application/json");
                     br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-                    String output;
-                    System.out.println("Output from Server .... \n");
                     while ((output = br.readLine()) != null)
                     {
                             System.out.println(output);
                     }
-                    conn.disconnect();
                     break;
                 case 2:
                     conn.setRequestMethod("POST");
@@ -78,12 +76,33 @@ public class RestTest
                     url = new URL("http://localhost:8080/api/tutorial/1.0/employees/4");
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("PATCH");
-                    conn.setRequestProperty("Accept", "application/json");                    
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    in = "{\"firstName\":\"Andrea\",\"phone\":\"3384578969\"}";
+                    conn.setDoOutput(true);
+                    os= conn.getOutputStream();
+                    os.write(in.getBytes());
+                    os.flush();
+                    System.out.println("Modifica avvenuta correttamente.");
                     break;
                 case 6:
+                    url = new URL("http://localhost:8080/api/tutorial/1.0/employees/4");
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+                    os= conn.getOutputStream();
+                    in = "{\"employeeId\":4,\"firstName\":\"Lorenzo\",\"lastName\":\"Prova\",\"email\":\"lorenzoprova@gmail.com\",\"phone\":\"3524759669\"}";
+                    os.write(in.getBytes());
+                    os.flush();
+                    System.out.println("Modifica avvenuta correttamente.");
                     break;
                 default:
                     System.out.println("Opzione non supportata.");
+                    conn.disconnect();
+            }
+            if (conn.getResponseCode() != 200 && conn.getResponseCode()!= 201)
+            {
+            throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());
             }
       } 
       catch (MalformedURLException e) 
