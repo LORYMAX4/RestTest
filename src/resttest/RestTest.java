@@ -105,13 +105,9 @@ public class RestTest
             throw new RuntimeException("Failed : HTTP error code : "+ conn.getResponseCode());
             }
       } 
-      catch (MalformedURLException e) 
+      catch(Exception e)
       {
-          e.printStackTrace();
-
-      } catch (IOException e)
-      {
-          e.printStackTrace();
+          System.out.println("Errore.");
       }
     }
 }
